@@ -21,6 +21,8 @@ services:
           type: web
           name: jobpilot-ai
           property: host
+      - key: LOG_CHANNEL
+        value: stderr
       - key: FREE_MODE
         value: "true"
       - key: FREE_RESOURCES_ONLY
@@ -44,8 +46,8 @@ services:
       - key: DB_PASSWORD
         sync: false
       - key: SESSION_DRIVER
-        value: database
+        value: file
       - key: QUEUE_CONNECTION
-        value: database
+        value: sync
       - key: CACHE_STORE
-        value: database
+        value: file
