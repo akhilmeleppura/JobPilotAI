@@ -5,17 +5,6 @@ set -e
 PORT="${PORT:-80}"
 sed -i "s/listen 80;/listen ${PORT};/g" /etc/nginx/http.d/default.conf
 
-# Ensure storage directories exist with proper write permissions
-mkdir -p /var/www/html/storage/framework/sessions \
-         /var/www/html/storage/framework/views \
-         /var/www/html/storage/framework/cache \
-         /var/www/html/storage/logs \
-         /var/www/html/bootstrap/cache \
-         /var/www/html/database
-
-touch /var/www/html/database/database.sqlite 2>/dev/null || true
-touch /var/www/html/test 2>/dev/null || true
-
 # If APP_KEY is empty or not base64, ensure a valid key is set
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "null" ]; then
     export APP_KEY="base64:8XzhuAMYY0PBPzTRZKLbso+60kZ7tC3p7C1QZsn81z0="
@@ -28,6 +17,17 @@ if [ -n "$DB_HOST" ]; then
     fi
 fi
 
+# Ensure storage directories exist
+mkdir -p /var/www/html/storage/framework/sessions \
+         /var/www/html/storage/framework/views \
+         /var/www/html/storage/framework/cache \
+         /var/www/html/storage/logs \
+         /var/www/html/bootstrap/cache \
+         /var/www/html/database
+
+touch /var/www/html/storage/logs/laravel.log
+chmod 777 /var/www/html/storage/logs/laravel.log
+
 # Write environment variables to .env so PHP-FPM and Laravel web workers have full access
 env | grep -E '^(APP_|DB_|TIDB_|MYSQL_|SESSION_|CACHE_|QUEUE_|MAIL_|FREE_|ALLOW_|EMERGENCY_|LOG_)' > /var/www/html/.env
 
@@ -39,9 +39,10 @@ if [ -n "$DB_HOST" ] && ! grep -q "DB_CONNECTION=" /var/www/html/.env; then
     echo "DB_CONNECTION=tidb" >> /var/www/html/.env
 fi
 
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database /var/www/html/.env /var/www/html/test
+# Ensure www-data full read/write permissions
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database /var/www/html/.env
 chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
-chmod 666 /var/www/html/.env /var/www/html/test 2>/dev/null || true
+chmod 666 /var/www/html/.env /var/www/html/storage/logs/laravel.log
 
 # Configure PHP-FPM to preserve environment variables
 echo "clear_env = no" >> /usr/local/etc/php-fpm.d/zz-docker.conf 2>/dev/null || true
@@ -51,10 +52,14 @@ php /var/www/html/artisan config:clear || true
 php /var/www/html/artisan view:clear || true
 
 # Auto-run database migrations and seed default test user
-echo "==> Running database migrations on Render..."
+echo "==> Running database migrations on TiDB..."
 php /var/www/html/artisan migrate --force || true
 
-echo "==> Running database seeders..."
+echo "==> Running database seeders on TiDB..."
 php /var/www/html/artisan db:seed --force || true
+
+# Re-ensure log permissions after artisan commands
+touch /var/www/html/storage/logs/laravel.log 2>/dev/null || true
+chmod 777 /var/www/html/storage/logs/laravel.log 2>/dev/null || true
 
 exec /usr/bin/supervisord -c /etc/supervisord.conf
