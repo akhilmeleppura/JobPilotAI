@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', (env('DB_HOST') && str_contains(env('DB_HOST'), 'tidb')) ? 'tidb' : (env('DB_HOST') ? 'mysql' : 'sqlite')),
 
     /*
     |--------------------------------------------------------------------------

@@ -14,10 +14,18 @@ mkdir -p /var/www/html/storage/framework/sessions \
          /var/www/html/database
 
 touch /var/www/html/database/database.sqlite 2>/dev/null || true
+touch /var/www/html/test 2>/dev/null || true
 
 # If APP_KEY is empty or not base64, ensure a valid key is set
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "null" ]; then
     export APP_KEY="base64:8XzhuAMYY0PBPzTRZKLbso+60kZ7tC3p7C1QZsn81z0="
+fi
+
+# Auto-detect TiDB connection if DB_HOST contains tidb
+if [ -n "$DB_HOST" ]; then
+    if echo "$DB_HOST" | grep -q "tidb"; then
+        export DB_CONNECTION="tidb"
+    fi
 fi
 
 # Write environment variables to .env so PHP-FPM and Laravel web workers have full access
@@ -27,9 +35,13 @@ if ! grep -q "APP_KEY=" /var/www/html/.env; then
     echo "APP_KEY=base64:8XzhuAMYY0PBPzTRZKLbso+60kZ7tC3p7C1QZsn81z0=" >> /var/www/html/.env
 fi
 
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database /var/www/html/.env
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
-chmod 664 /var/www/html/.env
+if [ -n "$DB_HOST" ] && ! grep -q "DB_CONNECTION=" /var/www/html/.env; then
+    echo "DB_CONNECTION=tidb" >> /var/www/html/.env
+fi
+
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database /var/www/html/.env /var/www/html/test
+chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+chmod 666 /var/www/html/.env /var/www/html/test 2>/dev/null || true
 
 # Configure PHP-FPM to preserve environment variables
 echo "clear_env = no" >> /usr/local/etc/php-fpm.d/zz-docker.conf 2>/dev/null || true
