@@ -4,6 +4,7 @@ FROM php:8.4-fpm-alpine
 RUN apk add --no-cache \
     nginx \
     curl \
+    ca-certificates \
     zip \
     unzip \
     git \
