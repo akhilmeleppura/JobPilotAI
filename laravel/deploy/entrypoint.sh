@@ -15,10 +15,26 @@ mkdir -p /var/www/html/storage/framework/sessions \
 
 touch /var/www/html/database/database.sqlite 2>/dev/null || true
 
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+# If APP_KEY is empty or not base64, ensure a valid key is set
+if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "null" ]; then
+    export APP_KEY="base64:8XzhuAMYY0PBPzTRZKLbso+60kZ7tC3p7C1QZsn81z0="
+fi
 
-# Clear caches so dynamic runtime env variables take effect
+# Write environment variables to .env so PHP-FPM and Laravel web workers have full access
+env | grep -E '^(APP_|DB_|TIDB_|MYSQL_|SESSION_|CACHE_|QUEUE_|MAIL_|FREE_|ALLOW_|EMERGENCY_|LOG_)' > /var/www/html/.env
+
+if ! grep -q "APP_KEY=" /var/www/html/.env; then
+    echo "APP_KEY=base64:8XzhuAMYY0PBPzTRZKLbso+60kZ7tC3p7C1QZsn81z0=" >> /var/www/html/.env
+fi
+
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database /var/www/html/.env
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+chmod 664 /var/www/html/.env
+
+# Configure PHP-FPM to preserve environment variables
+echo "clear_env = no" >> /usr/local/etc/php-fpm.d/zz-docker.conf 2>/dev/null || true
+
+# Clear cached config so runtime env variables take effect
 php /var/www/html/artisan config:clear || true
 php /var/www/html/artisan view:clear || true
 
