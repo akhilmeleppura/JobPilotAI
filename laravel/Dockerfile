@@ -18,7 +18,7 @@ RUN apk add --no-cache \
     npm \
     && docker-php-ext-install pdo pdo_mysql pdo_sqlite mbstring zip bcmath gd intl opcache
 
-# Copy Composer
+# Copy Composer from official image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
@@ -34,17 +34,14 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Build frontend production assets
-RUN npm ci && npm run build && rm -rf node_modules
+RUN npm install && npm run build && rm -rf node_modules
 
 # Configure Nginx and Supervisor
 COPY deploy/nginx-render.conf /etc/nginx/http.d/default.conf
 COPY deploy/supervisord-render.conf /etc/supervisord.conf
+COPY deploy/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Render assigns dynamic PORT environment variable (default 80)
-EXPOSE 80
+EXPOSE 80 10000
 
-CMD php /var/www/html/artisan config:cache \
-    && php /var/www/html/artisan route:cache \
-    && php /var/www/html/artisan view:cache \
-    && /usr/bin/supervisord -c /etc/supervisord.conf
-
+CMD ["/entrypoint.sh"]

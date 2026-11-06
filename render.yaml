@@ -3,7 +3,8 @@ services:
     name: jobpilot-ai
     runtime: docker
     rootDir: laravel
-    dockerfilePath: Dockerfile
+    dockerfilePath: laravel/Dockerfile
+    dockerContext: laravel
     plan: free
     region: oregon
     branch: main
@@ -48,4 +49,3 @@ services:
         value: database
       - key: CACHE_STORE
         value: database
-
