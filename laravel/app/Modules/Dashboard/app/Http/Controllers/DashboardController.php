@@ -43,8 +43,37 @@ class DashboardController extends Controller
             'offers_received' => 0,
         ];
 
-        $emailSummary = $this->allowanceService->getDashboardSummary($user);
-        $switchingMonitor = $this->switchingService->getSwitchingMonitorData($user);
+        try {
+            $emailSummary = $this->allowanceService->getDashboardSummary($user);
+            $switchingMonitor = $this->switchingService->getSwitchingMonitorData($user);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Email allowance services unavailable, attempting auto-migration: ' . $e->getMessage());
+            try {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+                $emailSummary = $this->allowanceService->getDashboardSummary($user);
+                $switchingMonitor = $this->switchingService->getSwitchingMonitorData($user);
+            } catch (\Throwable $retryErr) {
+                \Illuminate\Support\Facades\Log::error('Auto-migration on dashboard failed: ' . $retryErr->getMessage());
+                $emailSummary = [
+                    'connected_providers' => 0,
+                    'free_providers_eligible' => 0,
+                    'recipients_sent_today' => 0,
+                    'recipients_sent_this_month' => 0,
+                    'pending_emails' => 0,
+                    'failed_emails' => 0,
+                    'providers_paused' => 0,
+                    'providers_with_unknown_quota' => 0,
+                    'provider_cards' => [],
+                ];
+                $switchingMonitor = [
+                    'connected_accounts' => 0,
+                    'active_senders' => 0,
+                    'paused_accounts' => 0,
+                    'switching_events' => [],
+                    'accounts' => [],
+                ];
+            }
+        }
 
         $aiGateway = [
             'free_policy_enforced' => env('FREE_RESOURCES_ONLY', true),

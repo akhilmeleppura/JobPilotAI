@@ -55,6 +55,14 @@ php /var/www/html/artisan view:clear || true
 echo "==> Running database migrations on TiDB..."
 php /var/www/html/artisan migrate --force || true
 
+# Explicitly migrate every domain module directory to ensure all tables exist
+for mod_mig in /var/www/html/app/Modules/*/database/migrations; do
+    if [ -d "$mod_mig" ]; then
+        echo "==> Migrating module path: $mod_mig"
+        php /var/www/html/artisan migrate --path="$mod_mig" --force || true
+    fi
+done
+
 echo "==> Running database seeders on TiDB..."
 php /var/www/html/artisan db:seed --force || true
 
