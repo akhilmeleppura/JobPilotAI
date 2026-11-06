@@ -53,6 +53,8 @@ Route::get('/debug-check', function () {
 
 Route::get('/run-migrations', function () {
     try {
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+
         // If orphan table exists without being recorded in migrations, clean it up so migration succeeds
         $migrated = DB::table('migrations')->pluck('migration')->toArray();
         if (!in_array('2026_11_01_000001_create_content_posts_table', $migrated)) {
@@ -71,6 +73,8 @@ Route::get('/run-migrations', function () {
 
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         $seedOutput = \Illuminate\Support\Facades\Artisan::output();
+
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         // Get final list of tables
         $tables = [];

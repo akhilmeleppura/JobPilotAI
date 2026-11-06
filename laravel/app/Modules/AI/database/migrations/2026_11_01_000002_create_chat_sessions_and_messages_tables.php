@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title')->default('Career Copilot Session');
-            $table->foreignId('active_role_profile_id')->nullable()->constrained('role_profiles')->nullOnDelete();
+            $table->unsignedBigInteger('active_role_profile_id')->nullable()->index();
             $table->timestamps();
 
             $table->index(['user_id', 'created_at']);

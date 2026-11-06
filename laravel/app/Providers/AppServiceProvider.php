@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if ($this->app->runningInConsole()) {
+            try {
+                \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+            } catch (\Throwable $e) {}
+        }
     }
 }

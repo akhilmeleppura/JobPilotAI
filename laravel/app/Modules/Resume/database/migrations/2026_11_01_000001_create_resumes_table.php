@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('resumes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('role_profile_id')->nullable()->constrained('role_profiles')->nullOnDelete();
+            $table->unsignedBigInteger('role_profile_id')->nullable()->index();
             $table->string('title');
             $table->string('slug');
             $table->unsignedBigInteger('current_version_id')->nullable();

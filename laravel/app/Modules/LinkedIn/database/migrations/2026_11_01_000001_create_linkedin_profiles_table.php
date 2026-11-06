@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('linkedin_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('role_profile_id')->nullable()->constrained('role_profiles')->nullOnDelete();
+            $table->unsignedBigInteger('role_profile_id')->nullable()->index();
             $table->string('current_headline', 255)->nullable();
             $table->text('current_about')->nullable();
             $table->text('current_experience')->nullable();

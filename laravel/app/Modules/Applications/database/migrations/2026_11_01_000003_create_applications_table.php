@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('registry_id')->constrained('application_registry')->cascadeOnDelete();
-            $table->foreignId('job_vacancy_id')->nullable()->constrained('job_vacancies')->nullOnDelete();
-            $table->foreignId('role_profile_id')->nullable()->constrained('role_profiles')->nullOnDelete();
+            $table->unsignedBigInteger('job_vacancy_id')->nullable()->index();
+            $table->unsignedBigInteger('role_profile_id')->nullable()->index();
             $table->unsignedBigInteger('resume_id')->nullable();
             $table->unsignedBigInteger('resume_version_id')->nullable();
             $table->string('applied_via', 30)->default('Direct'); // Email, Portal, LinkedIn, Direct
