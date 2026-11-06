@@ -1,0 +1,6 @@
+﻿{
+    "name": "Candidate",
+    "alias": "candidate",
+    "description": "JobPilot AI Candidate Domain Module",
+    "version": "1.0.0"
+}

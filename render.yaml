@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: jobpilot-ai
+    runtime: docker
+    rootDir: laravel
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /up
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        fromService:
+          type: web
+          name: jobpilot-ai
+          property: host
+      - key: FREE_MODE
+        value: "true"
+      - key: FREE_RESOURCES_ONLY
+        value: "true"
+      - key: ALLOW_PAID_APIS
+        value: "false"
+      - key: ALLOW_AUTO_UPGRADES
+        value: "false"
+      - key: DB_CONNECTION
+        value: tidb
+      - key: DB_PORT
+        value: "4000"
+      - key: TIDB_SSL
+        value: "true"
+      - key: DB_HOST
+        sync: false
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: SESSION_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: CACHE_STORE
+        value: database
+

@@ -1,0 +1,6 @@
+﻿{
+    "name": "RoleProfiles",
+    "alias": "roleprofiles",
+    "description": "JobPilot AI RoleProfiles Domain Module",
+    "version": "1.0.0"
+}

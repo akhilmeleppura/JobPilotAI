@@ -1,0 +1,6 @@
+﻿{
+    "name": "Integrations",
+    "alias": "integrations",
+    "description": "JobPilot AI Integrations Domain Module",
+    "version": "1.0.0"
+}

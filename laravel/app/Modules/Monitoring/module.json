@@ -1,0 +1,6 @@
+﻿{
+    "name": "Monitoring",
+    "alias": "monitoring",
+    "description": "JobPilot AI Monitoring Domain Module",
+    "version": "1.0.0"
+}

@@ -1,0 +1,69 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{left=0.6in,top=0.6in,right=0.6in,bottom=0.6in}
+\pagestyle{empty}
+
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\setlist[itemize]{leftmargin=1.2em, itemsep=2pt, parsep=0pt, topsep=2pt}
+
+\begin{document}
+
+\begin{center}
+    {\huge \textbf{{{CANDIDATE_NAME}}}}\\[3pt]
+    \small {{EMAIL}} \textbar\ {{PHONE}} \textbar\ {{LOCATION}} \textbar\ \href{https://github.com/candidate}{github.com/developer} \textbar\ \href{https://linkedin.com/in/candidate}{linkedin.com/in/developer}
+\end{center}
+
+\vspace{-4pt}
+\section{Professional Summary}
+Results-driven Senior Backend Engineer with extensive experience designing resilient microservices, high-throughput REST/GraphQL APIs, and robust database architectures. Proven expertise in modern PHP 8.4, Laravel 13, TiDB Cloud, and Redis caching. Adept at domain-driven design, asynchronous queue orchestration, and mission-critical enterprise systems.
+
+\section{Technical Skills}
+\begin{itemize}
+    \item \textbf{Languages \& Frameworks:} PHP 8.4, Laravel 13, Symfony Components, Python, Bash, SQL.
+    \item \textbf{Databases \& Storage:} TiDB Cloud (Distributed SQL), MySQL 8.x, PostgreSQL, Redis, Elasticsearch.
+    \item \textbf{Architecture \& Cloud:} Microservices, Modular Monoliths, Docker, Kubernetes, AWS (EC2, S3, RDS), CI/CD.
+    \item \textbf{Testing \& Reliability:} TDD, PHPUnit, Pest PHP, Mockery, Static Analysis (PHPStan Level 8), Datadog.
+\end{itemize}
+
+\section{Professional Experience}
+\textbf{Lead Backend Engineer} \hfill Jan 2023 -- Present\\
+\textit{CloudScale Systems Inc. \textbar\ Remote}
+\begin{itemize}
+    \item Architected high-concurrency Laravel API services processing 15M+ daily requests with 99.99\% uptime.
+    \item Migrated relational bottlenecks to distributed TiDB Cloud cluster, cutting query latency by 42\%.
+    \item Engineered Redis queue pipelines handling 8,000 jobs/minute with automated retry dead-letter alerting.
+    \item Implemented AES-256 encrypted credential vaults and strict tenant isolation for multi-region operations.
+\end{itemize}
+
+\vspace{3pt}
+\textbf{Senior PHP / Laravel Developer} \hfill Mar 2020 -- Dec 2022\\
+\textit{Apex Enterprise Solutions \textbar\ London, UK}
+\begin{itemize}
+    \item Built modular enterprise SaaS backend integrating Stripe, PayPal, and Google Cloud Storage APIs.
+    \item Spearheaded automated test coverage from 35\% to 92\% using PHPUnit and GitHub Actions CI.
+    \item Optimized MySQL schema indexing and query execution plans, reducing server CPU utilization by 30\%.
+\end{itemize}
+
+\section{Key Projects}
+\textbf{JobPilot AI Career Cockpit} \textbar\ \textit{PHP 8.4, Laravel 13, Bootstrap 5, TiDB Cloud}
+\begin{itemize}
+    \item Built modular monolith career cockpit featuring duplicate detection, Gmail automation, and LaTeX compilation.
+    \item Implemented zero-cost AI provider fallback gateways with sub-500ms response streaming.
+\end{itemize}
+
+\section{Education \& Certifications}
+\textbf{B.S. in Computer Science} \hfill 2016 -- 2020\\
+State University of Technology \hfill GPA: 3.8 / 4.0
+\begin{itemize}
+    \item Zend Certified PHP Engineer \textbar\ AWS Certified Solutions Architect Associate
+\end{itemize}
+
+\end{document}
+

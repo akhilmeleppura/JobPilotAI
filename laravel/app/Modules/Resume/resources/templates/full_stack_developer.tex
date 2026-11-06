@@ -1,0 +1,68 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{left=0.6in,top=0.6in,right=0.6in,bottom=0.6in}
+\pagestyle{empty}
+
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\setlist[itemize]{leftmargin=1.2em, itemsep=2pt, parsep=0pt, topsep=2pt}
+
+\begin{document}
+
+\begin{center}
+    {\huge \textbf{{{CANDIDATE_NAME}}}}\\[3pt]
+    \small {{EMAIL}} \textbar\ {{PHONE}} \textbar\ {{LOCATION}} \textbar\ \href{https://github.com/candidate}{github.com/developer} \textbar\ \href{https://linkedin.com/in/candidate}{linkedin.com/in/developer}
+\end{center}
+
+\vspace{-4pt}
+\section{Professional Summary}
+Full Stack Web Engineer with over 6 years of expertise delivering high-impact, end-to-end web applications. Master of the modern web stack bridging robust server-side Laravel/PHP architectures with responsive, component-driven Vue.js, React, and Tailwind CSS frontends. Focused on clean code, test coverage, and intuitive user experiences.
+
+\section{Technical Expertise}
+\begin{itemize}
+    \item \textbf{Backend:} PHP 8.4, Laravel 13, Node.js, Express, RESTful APIs, GraphQL, Microservices.
+    \item \textbf{Frontend:} JavaScript (ES2024), TypeScript, Vue.js (Pinia, Vue Router), React, Inertia.js, Tailwind CSS, Bootstrap 5.
+    \item \textbf{Database \& Caching:} MySQL, TiDB Cloud, PostgreSQL, SQLite, Redis, Meilisearch.
+    \item \textbf{DevOps \& Tools:} Git, GitHub Actions, Docker, Vite, Webpack, Linux/Nginx, AWS, Vercel.
+\end{itemize}
+
+\section{Work Experience}
+\textbf{Senior Full Stack Engineer} \hfill Apr 2022 -- Present\\
+\textit{OmniTech Digital Solutions \textbar\ Remote}
+\begin{itemize}
+    \item Designed and launched SaaS analytics cockpit combining Laravel 12 REST API with reactive Vue 3 frontend.
+    \item Reduced page rendering time by 55\% by migrating server-rendered pages to Inertia.js with optimized Redis caching.
+    \item Implemented real-time interactive dashboards utilizing WebSockets and Server-Sent Events (SSE).
+    \item Maintained 90\% automated test coverage across full backend and frontend UI components.
+\end{itemize}
+
+\vspace{3pt}
+\textbf{Full Stack Developer} \hfill Sep 2019 -- Mar 2022\\
+\textit{Vanguard Web Lab \textbar\ Manchester, UK}
+\begin{itemize}
+    \item Engineered 15+ bespoke client portals featuring responsive mobile-first UIs and automated billing pipelines.
+    \item Integrated payment gateways (Stripe Checkout \& Elements, Mollie) with automated PDF invoice generation.
+    \item Collaborated with UX designers to translate Figma design systems into pixel-perfect Tailwind component libraries.
+\end{itemize}
+
+\section{Featured Full-Stack Applications}
+\textbf{JobPilot AI Career Platform} \textbar\ \textit{Laravel 13, Bootstrap 5, SQLite/TiDB Cloud}
+\begin{itemize}
+    \item Developed full-stack applicant cockpit featuring automated email outreach, duplicate checking, and LaTeX resume compiling.
+\end{itemize}
+
+\section{Education \& Accreditations}
+\textbf{B.S. in Software Engineering} \hfill 2015 -- 2019\\
+University of Science and Technology
+\begin{itemize}
+    \item Full Stack Web Development Specialist Certification \textbar\ Agile Certified Scrum Master (CSM)
+\end{itemize}
+
+\end{document}
+

@@ -1,0 +1,6 @@
+﻿{
+    "name": "Settings",
+    "alias": "settings",
+    "description": "JobPilot AI Settings Domain Module",
+    "version": "1.0.0"
+}

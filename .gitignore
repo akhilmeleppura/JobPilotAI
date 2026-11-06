@@ -1,0 +1,41 @@
+# Windows PHP standalone runtime
+/bin/
+
+# Backups and test results
+/backups/
+/tests-results/
+.phpunit.result.cache
+
+# Environment and sensitive keys
+.env
+.env.backup
+.env.production
+laravel/.env
+laravel/.env.backup
+laravel/.env.production
+laravel/storage/*.key
+
+# Dependency directories
+/node_modules/
+laravel/node_modules/
+/vendor/
+laravel/vendor/
+
+# Laravel Storage & Cache
+laravel/storage/logs/*.log
+laravel/storage/framework/cache/data/*
+laravel/storage/framework/sessions/*
+laravel/storage/framework/views/*
+!laravel/storage/framework/cache/.gitignore
+!laravel/storage/framework/sessions/.gitignore
+!laravel/storage/framework/views/.gitignore
+
+# Local SQLite databases (Render uses TiDB Serverless Cloud)
+laravel/database/*.sqlite
+laravel/database/*.sqlite-journal
+!laravel/database/.gitignore
+
+# System files
+.DS_Store
+Thumbs.db
+*.tmp

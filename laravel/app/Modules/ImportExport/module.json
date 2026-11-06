@@ -1,0 +1,6 @@
+﻿{
+    "name": "ImportExport",
+    "alias": "importexport",
+    "description": "JobPilot AI ImportExport Domain Module",
+    "version": "1.0.0"
+}

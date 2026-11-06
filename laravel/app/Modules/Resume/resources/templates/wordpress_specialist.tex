@@ -1,0 +1,68 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{left=0.6in,top=0.6in,right=0.6in,bottom=0.6in}
+\pagestyle{empty}
+
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\setlist[itemize]{leftmargin=1.2em, itemsep=2pt, parsep=0pt, topsep=2pt}
+
+\begin{document}
+
+\begin{center}
+    {\huge \textbf{{{CANDIDATE_NAME}}}}\\[3pt]
+    \small {{EMAIL}} \textbar\ {{PHONE}} \textbar\ {{LOCATION}} \textbar\ \href{https://github.com/candidate}{github.com/developer} \textbar\ \href{https://linkedin.com/in/candidate}{linkedin.com/in/developer}
+\end{center}
+
+\vspace{-4pt}
+\section{Professional Summary}
+Senior WordPress \& WooCommerce Solutions Architect with deep expertise in bespoke plugin engineering, high-volume e-commerce optimization, and headless WordPress architectures. Proven track record scaling WooCommerce stores to \$20M+ annual GMV with sub-second page loads and custom checkout workflows.
+
+\section{Core Competencies}
+\begin{itemize}
+    \item \textbf{WordPress Core \& Ecosystem:} Custom Plugin Development, Hooks, Filters, Shortcodes, Gutenberg Block Development, WP-CLI, Action Scheduler.
+    \item \textbf{WooCommerce Mastery:} Custom Payment Gateways, Subscription Billing, High-Performance Order Storage (HPOS), Multi-Currency, REST API.
+    \item \textbf{Backend \& Performance:} PHP 8.x, MySQL Query Profiling, Redis Object Caching, Varnish, Cloudflare Edge Rules, Nginx Tuning.
+    \item \textbf{Frontend \& Tooling:} React / JS, Modern CSS, Tailwind CSS, Vite, Composer, Git, Docker (wp-env / LocalWP).
+\end{itemize}
+
+\section{Professional Experience}
+\textbf{Principal WooCommerce Architect} \hfill Feb 2022 -- Present\\
+\textit{CommerceEdge Agency \textbar\ Remote}
+\begin{itemize}
+    \item Led architecture for enterprise WooCommerce platform supporting 45,000 SKUs and 100k daily unique visitors.
+    \item Engineered bespoke custom ERP synchronization plugin handling 10,000 inventory updates per hour via REST API.
+    \item Migrated checkout pipeline to WooCommerce Blocks and HPOS, improving checkout conversion rate by 18.5\%.
+    \item Implemented Redis Object Cache and transient caching strategies, slashing database queries per page by 65\%.
+\end{itemize}
+
+\vspace{3pt}
+\textbf{Senior WordPress Engineer} \hfill May 2019 -- Jan 2022\\
+\textit{Digital Craft Media \textbar\ Remote}
+\begin{itemize}
+    \item Developed 12+ proprietary commercial plugins adhering strictly to WordPress VIP and PHPCS coding standards.
+    \item Architected multi-site WordPress network for 30+ enterprise international subsites with localized payment routing.
+    \item Audited security vulnerabilities and resolved cross-site scripting (XSS) and SQL injection vectors in legacy codebases.
+\end{itemize}
+
+\section{Notable E-Commerce Projects}
+\textbf{Automated Subscription \& Tiered Discount Engine} \textbar\ \textit{WooCommerce, PHP 8.2, Stripe API}
+\begin{itemize}
+    \item Custom WooCommerce extension delivering dynamic B2B tiered wholesale pricing with recurring renewal webhooks.
+\end{itemize}
+
+\section{Education \& Qualifications}
+\textbf{B.S. in Information Systems} \hfill 2015 -- 2019\\
+Metropolitan State University
+\begin{itemize}
+    \item Official WordPress Core Contributor \textbar\ Certified WooCommerce Expert
+\end{itemize}
+
+\end{document}
+
