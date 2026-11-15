@@ -411,7 +411,7 @@
                     $isOverview = request()->is('/') || request()->is('dashboard*');
                     $isCareer = request()->is('role-profiles*') || request()->is('cv-studio*') || request()->is('linkedin-optimizer*');
                     $isJobs = request()->is('jobs*') || request()->is('applications*') || request()->is('import*');
-                    $isComms = request()->is('email-studio*');
+                    $isComms = request()->is('email-studio*') || request()->is('outlook*');
                     $isAI = request()->is('ai-chat*');
                     $isContent = request()->is('content-studio*') || request()->is('linkedin/publishing*');
                     $isArchives = request()->is('archives*');
@@ -529,6 +529,13 @@
                     </button>
                     <div class="collapse {{ $isComms ? 'show' : '' }}" id="group-comms">
                         <ul class="nav-sub-list">
+                            <li class="nav-sub-item">
+                                <a href="{{ url('/outlook') }}" class="nav-link-item {{ request()->is('outlook*') ? 'active' : '' }}">
+                                    <i class="bi bi-envelope-open-fill text-primary"></i>
+                                    <span>Outlook Hub</span>
+                                    <span class="badge bg-primary ms-auto" style="font-size: 0.65rem;">NEW</span>
+                                </a>
+                            </li>
                             <li class="nav-sub-item">
                                 <a href="{{ url('/email-studio') }}" class="nav-link-item {{ request()->is('email-studio*') ? 'active' : '' }}">
                                     <i class="bi bi-envelope-paper-fill"></i>
@@ -821,6 +828,11 @@
                     </div>
                     <div class="nav-group mb-2">
                         <div class="text-uppercase text-secondary small fw-bold px-2 py-1">Communications & AI</div>
+                        <a href="{{ url('/outlook') }}" class="nav-link-item {{ request()->is('outlook*') ? 'active' : '' }}">
+                            <i class="bi bi-envelope-open-fill text-primary"></i>
+                            <span>Outlook Hub</span>
+                            <span class="badge bg-primary ms-auto" style="font-size: 0.65rem;">NEW</span>
+                        </a>
                         <a href="{{ url('/email-studio') }}" class="nav-link-item {{ request()->is('email-studio*') ? 'active' : '' }}">
                             <i class="bi bi-envelope-paper-fill"></i>
                             <span>Email Studio</span>

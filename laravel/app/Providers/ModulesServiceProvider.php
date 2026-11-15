@@ -27,6 +27,7 @@ class ModulesServiceProvider extends ServiceProvider
         'Automation',
         'Monitoring',
         'Settings',
+        'Outlook',
     ];
 
     /**
