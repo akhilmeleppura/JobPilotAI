@@ -722,6 +722,17 @@
 
             <!-- 3. Fixed Settings Shortcut (Always visible regardless of navigation scroll) -->
             <div class="sidebar-settings">
+                @if(auth()->check() && auth()->user()->isAdmin())
+                <a href="{{ url('/admin') }}" class="sidebar-settings-link mb-1 {{ request()->is('admin*') ? 'active' : '' }}" id="pinnedAdminLink" title="Access Superadmin Control Cockpit">
+                    <span class="d-flex align-items-center gap-2">
+                        <i class="bi bi-shield-shaded text-danger"></i>
+                        <span class="text-danger fw-bold">Admin Cockpit</span>
+                    </span>
+                    <span class="badge bg-danger text-white rounded-pill" style="font-size: 0.65rem;">
+                        Root
+                    </span>
+                </a>
+                @endif
                 <a href="{{ url('/settings') }}" class="sidebar-settings-link {{ request()->is('settings*') ? 'active' : '' }}" id="pinnedSettingsLink" title="Access Central Settings & Vault">
                     <span class="d-flex align-items-center gap-2">
                         <i class="bi bi-gear-wide-connected text-primary"></i>
