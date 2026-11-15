@@ -9,6 +9,7 @@ Route::middleware('auth')->prefix('outlook')->name('outlook.')->group(function (
 
     // Mail Actions
     Route::post('/mail/send', [OutlookController::class, 'sendMessage'])->name('mail.send');
+    Route::post('/mail/test-send', [OutlookController::class, 'sendLiveTestEmail'])->name('mail.test-send');
     Route::post('/mail/{id}/flag', [OutlookController::class, 'toggleFlag'])->name('mail.toggle-flag');
     Route::post('/mail/{id}/read', [OutlookController::class, 'toggleRead'])->name('mail.toggle-read');
     Route::delete('/mail/{id}', [OutlookController::class, 'deleteMessage'])->name('mail.delete');

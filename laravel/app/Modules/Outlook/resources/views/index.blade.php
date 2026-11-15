@@ -35,6 +35,10 @@
 
         <!-- Right Quick Tools -->
         <div class="d-flex align-items-center gap-2 text-white">
+            <button class="btn btn-sm btn-warning text-dark fw-bold d-inline-flex align-items-center gap-1 shadow-sm" 
+                    data-bs-toggle="modal" data-bs-target="#liveTestEmailModal" title="Send a real test email to any recipient">
+                <i class="bi bi-send-check-fill text-dark"></i> Send Test Email
+            </button>
             <button class="btn btn-sm btn-outline-light d-none d-md-inline-flex align-items-center gap-1 border-0" 
                     data-bs-toggle="modal" data-bs-target="#newComposeModal">
                 <i class="bi bi-plus-circle me-1"></i> New
@@ -777,6 +781,53 @@
                 <div class="modal-footer bg-light py-2 px-3 border-0">
                     <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-sm btn-primary px-3 fw-semibold">Save Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ======================= MODAL: SEND REAL TEST EMAIL ======================= -->
+<div class="modal fade" id="liveTestEmailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-gradient text-white py-2 px-3" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-send-check-fill text-warning fs-5"></i>
+                    <h6 class="modal-title fw-bold mb-0">Real Live Email Delivery Test</h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('outlook.mail.test-send') }}" method="POST">
+                @csrf
+                <div class="modal-body p-3">
+                    <div class="alert alert-light border small text-muted mb-3">
+                        <i class="bi bi-info-circle-fill text-primary me-1"></i>
+                        Use this to test real email transmission from your JobPilot AI deployment to any live inbox.
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-semibold">Destination Test Email Address</label>
+                        <input type="email" name="test_recipient" class="form-control form-control-sm" 
+                               placeholder="e.g. 2020with22@gmail.com or your recipient" required 
+                               value="2020with22@gmail.com">
+                        <div class="form-text" style="font-size: 0.75rem;">Enter the inbox where you want to receive the verification email.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-semibold">Subject Line</label>
+                        <input type="text" name="test_subject" class="form-control form-control-sm" 
+                               value="JobPilot AI — Real Delivery Verification Test">
+                    </div>
+                    <div>
+                        <label class="small text-muted fw-semibold">Message Body</label>
+                        <textarea name="test_body" rows="4" class="form-control form-control-sm" 
+                                  placeholder="Verification body text...">Hello! This is a real delivery test from JobPilot AI Outlook Hub to verify outbound email transmission.</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light py-2 px-3 border-0 d-flex justify-content-between">
+                    <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-sm btn-primary px-4 fw-semibold">
+                        <i class="bi bi-send-fill me-1"></i> Send Real Test Email Now
+                    </button>
                 </div>
             </form>
         </div>
