@@ -1,13 +1,13 @@
 @if(auth()->check())
-<!-- ================= GLOBAL JARVIS AI COPILOT & VOICE ASSISTANT ================= -->
+<!-- ================= GLOBAL PILO AI COPILOT & VOICE ASSISTANT ================= -->
 <div id="jobpilotCopilotContainer">
     <!-- Floating Trigger Launcher Button -->
     <button id="copilotLauncherBtn" class="btn btn-primary rounded-pill shadow-lg d-flex align-items-center gap-2 px-3 py-2" 
-            title="Open Jarvis AI (Voice, Mail Dispatch, Status Check & Reports)"
+            title="Open Pilo AI (Voice, Mail Dispatch, Status Check & Reports)"
             onclick="toggleCopilotWidget()">
         <span class="copilot-pulse"></span>
         <i class="bi bi-mic-fill text-warning fs-5"></i>
-        <span class="fw-bold d-none d-sm-inline" style="font-size: 0.9rem;">Jarvis AI & Voice</span>
+        <span class="fw-bold d-none d-sm-inline" style="font-size: 0.9rem;">Pilo AI & Voice</span>
     </button>
 
     <!-- Floating Chat Window Card -->
@@ -21,7 +21,7 @@
                 </div>
                 <div>
                     <div class="d-flex align-items-center gap-1">
-                        <h6 class="mb-0 fw-bold" style="font-size: 0.95rem;">Jarvis AI Copilot</h6>
+                        <h6 class="mb-0 fw-bold" style="font-size: 0.95rem;">Pilo AI Copilot</h6>
                         <span class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" style="font-size: 0.65rem;">Voice Ready</span>
                     </div>
                     <small class="text-white-50" style="font-size: 0.72rem;">Mail Dispatch &bull; Status &bull; Reports &bull; Free Inference</small>
@@ -52,8 +52,8 @@
             <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check mailbox and collect unread emails')">
                 📬 Check Mailbox
             </button>
-            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Send email to 2020with22@gmail.com subject Real Test body Greetings from Jarvis AI')">
-                ⚡ Send Mail via Jarvis
+            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Send email to 2020with22@gmail.com subject Real Test body Greetings from Pilo AI')">
+                ⚡ Send Mail via Pilo
             </button>
             <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Setup API keys order-wise')">
                 🔑 Setup API Keys
@@ -65,11 +65,11 @@
             <form id="copilotForm" onsubmit="handleCopilotSubmit(event)" class="d-flex align-items-center gap-2 m-0">
                 <!-- Voice Dictation Button (Web Speech API) -->
                 <button type="button" id="btnVoiceRecord" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 34px; height: 34px; flex-shrink: 0;" 
-                        title="Voice Input (Speak to Jarvis)" onclick="toggleVoiceDictation()">
+                        title="Voice Input (Speak to Pilo)" onclick="toggleVoiceDictation()">
                     <i class="bi bi-mic-fill" id="micIcon"></i>
                 </button>
                 <input type="text" id="copilotInput" class="form-control form-control-sm border-0 bg-light rounded-pill px-3 py-2" 
-                       placeholder="Speak or ask Jarvis (e.g. 'send mail to...', 'report', 'check mail')..." autocomplete="off">
+                       placeholder="Speak or ask Pilo (e.g. 'send mail to...', 'report', 'check mail')..." autocomplete="off">
                 <button type="submit" id="copilotSendBtn" class="btn btn-sm btn-primary rounded-circle" style="width: 34px; height: 34px; flex-shrink: 0;" title="Send">
                     <i class="bi bi-arrow-up-short fs-5"></i>
                 </button>
@@ -230,7 +230,7 @@ function toggleVoiceOutput() {
     const icon = document.getElementById('voiceToggleIcon');
     if (voiceOutputEnabled) {
         icon.className = 'bi bi-volume-up-fill';
-        speakWithJarvis('Voice output activated.');
+        speakWithPilo('Voice output activated.');
     } else {
         icon.className = 'bi bi-volume-mute-fill';
         if ('speechSynthesis' in window) {
@@ -239,7 +239,7 @@ function toggleVoiceOutput() {
     }
 }
 
-function speakWithJarvis(text) {
+function speakWithPilo(text) {
     if (!voiceOutputEnabled || !('speechSynthesis' in window)) return;
     try {
         window.speechSynthesis.cancel();
@@ -280,7 +280,7 @@ function initCopilotGuide() {
                 <i class="bi bi-robot"></i>
             </div>
             <div class="copilot-msg-bubble copilot-msg-bot">
-                <div class="fw-bold mb-1">🤖 Jarvis AI Online: Ready to assist.</div>
+                <div class="fw-bold mb-1">🤖 Pilo AI Online: Ready to assist.</div>
                 You can speak or type commands directly:
                 <ul class="mb-2 ps-3 mt-1" style="font-size: 0.8rem;">
                     <li><strong>Send Mails:</strong> <code>send email to <email> subject ... body ...</code></li>
@@ -302,7 +302,7 @@ function initCopilotGuide() {
             </div>
         </div>
     `;
-    speakWithJarvis("Jarvis online. All systems nominal. How may I assist you today?");
+    speakWithPilo("Pilo online. All systems nominal. How may I assist you today?");
 }
 
 function restartCopilotGuide() {
@@ -341,7 +341,7 @@ async function handleCopilotSubmit(e) {
                 <i class="bi bi-robot"></i>
             </div>
             <div class="copilot-msg-bubble copilot-msg-bot text-muted">
-                <span class="spinner-border spinner-border-sm text-primary me-2"></span> Jarvis analyzing telemetry & executing commands...
+                <span class="spinner-border spinner-border-sm text-primary me-2"></span> Pilo analyzing telemetry & executing commands...
             </div>
         </div>
     `;
@@ -365,7 +365,7 @@ async function handleCopilotSubmit(e) {
         if (data.success && data.data) {
             renderCopilotBotReply(data.data);
             if (data.data.speak) {
-                speakWithJarvis(data.data.speak);
+                speakWithPilo(data.data.speak);
             }
         } else {
             renderCopilotBotReply({ reply: "Sorry, I could not process your request. Please try again." });

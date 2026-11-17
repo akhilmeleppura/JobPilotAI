@@ -28,11 +28,11 @@ class CopilotAssistantService
     ) {}
 
     /**
-     * Process an incoming user prompt from the global Jarvis Copilot widget.
+     * Process an incoming user prompt from the global Pilo Copilot widget.
      * Features:
      * 1. Smart Mail Sending via voice/chat ("send email to X with subject Y...")
      * 2. Inbox Collection & Status Check ("check my inbox", "collect mails", "status check")
-     * 3. Comprehensive Jarvis Intelligence Report ("generate report", "system status", "career report")
+     * 3. Comprehensive Pilo Intelligence Report ("generate report", "system status", "career report")
      * 4. API Key setup & encrypted vault saving
      * 5. Navigation & auto-fill actions
      * 6. Voice synthesized response cues
@@ -42,19 +42,19 @@ class CopilotAssistantService
         $trimmed = trim($userMessage);
         $lower = strtolower($trimmed);
 
-        // 1. Jarvis Command: Smart Send Email via Chat/Voice
+        // 1. Pilo Command: Smart Send Email via Chat/Voice
         $sendMailResult = $this->detectAndProcessSendMail($user, $trimmed, $lower);
         if ($sendMailResult) {
             return $sendMailResult;
         }
 
-        // 2. Jarvis Command: Collect Mails & Inbox Status Check
+        // 2. Pilo Command: Collect Mails & Inbox Status Check
         $mailStatusResult = $this->detectMailStatusCheck($user, $lower);
         if ($mailStatusResult) {
             return $mailStatusResult;
         }
 
-        // 3. Jarvis Command: Comprehensive Intelligence Report
+        // 3. Pilo Command: Comprehensive Intelligence Report
         $reportResult = $this->detectReportRequest($user, $lower);
         if ($reportResult) {
             return $reportResult;
@@ -72,7 +72,7 @@ class CopilotAssistantService
             return $navAction;
         }
 
-        // 6. Generative Jarvis AI Response
+        // 6. Generative Pilo AI Response
         return $this->generateGenerativeGuidance($user, $trimmed);
     }
 
@@ -96,7 +96,7 @@ class CopilotAssistantService
 
         if (!$recipient) {
             return [
-                'reply' => "🤖 **Jarvis Mail Command Detected:**\n\nTo dispatch an email directly through chat, please provide the recipient's email address.\n\n*Format example:* `send email to recruiter@google.com subject Application Follow-Up body Hello, I am checking in on my submission.`",
+                'reply' => "🤖 **Pilo Mail Command Detected:**\n\nTo dispatch an email directly through chat, please provide the recipient's email address.\n\n*Format example:* `send email to recruiter@google.com subject Application Follow-Up body Hello, I am checking in on my submission.`",
                 'quick_actions' => [
                     ['label' => 'Open Outlook Composer', 'url' => '/outlook', 'icon' => 'bi-pencil-square', 'autonav' => true],
                     ['label' => 'Open Email Studio', 'url' => '/email-studio', 'icon' => 'bi-envelope', 'autonav' => true]
@@ -136,7 +136,7 @@ class CopilotAssistantService
             'subject' => $subject,
             'snippet' => substr(strip_tags($body), 0, 160) . '...',
             'body_html' => nl2br(e($body)),
-            'category' => 'JarvisVoiceOutreach',
+            'category' => 'PiloVoiceOutreach',
             'received_at' => Carbon::now(),
         ]);
 
@@ -154,7 +154,7 @@ class CopilotAssistantService
         }
 
         return [
-            'reply' => "⚡ **Jarvis Action Complete: Outbound Email Dispatched!**\n\n" .
+            'reply' => "⚡ **Pilo Action Complete: Outbound Email Dispatched!**\n\n" .
                 "- **To:** `{$recipient}`\n" .
                 "- **Subject:** `{$subject}`\n" .
                 "- **Status:** Successfully {$transportNote} and indexed in your **Outlook Sent Items**.\n\n" .
@@ -202,7 +202,7 @@ class CopilotAssistantService
 
         $latestThread = $inboxMessages->first();
 
-        $reply = "📬 **Jarvis Mailbox Status & Collection Report:**\n\n" .
+        $reply = "📬 **Pilo Mailbox Status & Collection Report:**\n\n" .
             "- **Inbox Total:** {$inboxMessages->count()} messages ({$unreadCount} Unread)\n" .
             "- **Sent Items:** {$sentCount} dispatched emails\n" .
             "- **Active Pipeline:** TiDB Cloud Real-Time Sync\n\n";
@@ -229,14 +229,14 @@ class CopilotAssistantService
     }
 
     /**
-     * Detect full Jarvis Intelligence Report request.
-     * Examples: "generate report", "system status", "give me report", "jarvis report"
+     * Detect full Pilo Intelligence Report request.
+     * Examples: "generate report", "system status", "give me report", "pilo report"
      */
     protected function detectReportRequest(User $user, string $lower): ?array
     {
         $isReport = str_contains($lower, 'report') || 
                     str_contains($lower, 'system status') || 
-                    str_contains($lower, 'jarvis status') || 
+                    str_contains($lower, 'pilo status') || 
                     str_contains($lower, 'overall status') ||
                     str_contains($lower, 'executive summary');
 
@@ -257,7 +257,7 @@ class CopilotAssistantService
         $integrations = $this->vaultService->getOrSeedIntegrationsForUser($user);
         $healthyIntegrations = $integrations->where('health_status', 'Healthy')->count();
 
-        $reportText = "📊 **JobPilot AI — Jarvis Executive Intelligence Briefing**\n" .
+        $reportText = "📊 **JobPilot AI — Pilo Executive Intelligence Briefing**\n" .
             "*Generated at: " . Carbon::now()->format('M j, Y — g:i A') . "*\n\n" .
             "### 1. Career Pipeline & Applications\n" .
             "- **Total Applications Staged/Sent:** **{$appTotal}**\n" .
@@ -347,7 +347,7 @@ class CopilotAssistantService
             };
 
             return [
-                'reply' => "🎉 **Jarvis Vault Update:** Your API key for **{$providerDisplayName}** has been securely encrypted with AES-256-GCM and saved to your personal vault.\n\n" .
+                'reply' => "🎉 **Pilo Vault Update:** Your API key for **{$providerDisplayName}** has been securely encrypted with AES-256-GCM and saved to your personal vault.\n\n" .
                     "**Live Health Ping**: " . ($ping['status'] === 'Healthy' ? '🟢 Healthy & Connected' : '🟡 ' . $ping['message']) . "\n\n" .
                     "Subsystem is now primed for high-speed inference and auto-tailoring.",
                 'speak' => "Your API key for {$providerDisplayName} has been encrypted and saved. Connection is healthy.",
@@ -448,8 +448,8 @@ class CopilotAssistantService
         $msgCount = OutlookMessage::where('user_id', $user->id)->count();
         $isAdmin = $user->isAdmin();
 
-        $systemPrompt = "You are Jarvis, the elite career AI and system copilot of JobPilot AI. " .
-            "You are smart, precise, and proactive like Tony Stark's Jarvis. " .
+        $systemPrompt = "You are Pilo, the elite career AI and smart hydraulic copilot of JobPilot AI. " .
+            "You are smart, precise, friendly, and proactive. " .
             "You help users send emails, inspect inbox status, generate reports, tailor CVs, and configure API settings. " .
             "Current User: {$user->name} ({$user->email}), Admin: " . ($isAdmin ? 'Yes' : 'No') . ". " .
             "Context: Profiles: {$profileCount}, Resumes: {$resumeCount}, Applications: {$appCount}, Outlook Threads: {$msgCount}. " .
@@ -475,17 +475,17 @@ class CopilotAssistantService
                 ]
             ];
         } catch (\Throwable $e) {
-            Log::info('Jarvis generative fallback: ' . $e->getMessage());
+            Log::info('Pilo generative fallback: ' . $e->getMessage());
 
             return [
-                'reply' => "🤖 **Jarvis System Online:**\n\n" .
+                'reply' => "🤖 **Pilo System Online:**\n\n" .
                     "I am ready to assist with:\n" .
                     "- **Sending Emails:** Say `send email to <email> subject <subject> body <text>`\n" .
                     "- **Checking Mail & Inbox:** Say `check mail` or `status check`\n" .
                     "- **Executive Briefing:** Say `generate report`\n" .
                     "- **API Setup:** Say `my gemini key is <key>`\n\n" .
                     "How can I serve you right now?",
-                'speak' => "Jarvis online. You can send emails, check inbox status, or ask for an executive briefing.",
+                'speak' => "Pilo online. You can send emails, check inbox status, or ask for an executive briefing.",
                 'quick_actions' => [
                     ['label' => 'Check Mailbox', 'url' => '/outlook?tab=mail&folder=inbox', 'icon' => 'bi-envelope-open', 'autonav' => false],
                     ['label' => 'Executive Report', 'url' => '#', 'icon' => 'bi-graph-up', 'autonav' => false],
