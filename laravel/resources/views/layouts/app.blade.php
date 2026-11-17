@@ -1051,6 +1051,7 @@
             });
         });
     </script>
+    @include('partials.copilot_widget')
     @stack('scripts')
 </body>
 </html>
