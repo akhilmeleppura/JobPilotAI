@@ -659,7 +659,7 @@ class CopilotAssistantService
                 maxTokens: 500
             );
 
-            $response = $this->aiGateway->generate($req, 'gemini', $user);
+            $response = $this->aiGateway->complete($user, $req);
 
             return [
                 'reply' => $response->content,

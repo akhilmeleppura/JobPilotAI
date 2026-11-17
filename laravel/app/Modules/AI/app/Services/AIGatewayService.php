@@ -10,6 +10,7 @@ use App\Modules\AI\app\Exceptions\PaidResourceBlockedException;
 use App\Modules\AI\app\Models\AIRequestLog;
 use App\Modules\AI\app\Services\Providers\GeminiProvider;
 use App\Modules\AI\app\Services\Providers\GroqProvider;
+use App\Modules\AI\app\Services\Providers\LocalNeuralFallbackProvider;
 use App\Modules\AI\app\Services\Providers\OllamaProvider;
 use App\Modules\AI\app\Services\Providers\OpenRouterProvider;
 use App\Modules\Integrations\app\Models\IntegrationCredential;
@@ -28,13 +29,15 @@ class AIGatewayService
         GeminiProvider $gemini,
         GroqProvider $groq,
         OpenRouterProvider $openRouter,
-        OllamaProvider $ollama
+        OllamaProvider $ollama,
+        LocalNeuralFallbackProvider $builtinNeural
     ) {
         $this->providers = [
             'gemini' => $gemini,
             'groq' => $groq,
             'openrouter' => $openRouter,
             'ollama' => $ollama,
+            'builtin_neural' => $builtinNeural,
         ];
     }
 
@@ -56,6 +59,7 @@ class AIGatewayService
 
     /**
      * Generate text with strict Free-First enforcement and resilient fallback.
+     * Even if user has zero API keys configured, falls back seamlessly to builtin_neural engine.
      */
     public function complete(User $user, AIRequestDTO $request): AIResponseDTO
     {
@@ -84,9 +88,31 @@ class AIGatewayService
         $lastException = null;
         $isFallback = false;
 
-        foreach ($chain as $index => $providerKey) {
+        foreach ($chain as $providerKey) {
             $provider = $this->providers[$providerKey] ?? null;
             if (!$provider) continue;
+
+            // Built-in neural provider requires zero external API keys
+            if ($providerKey === 'builtin_neural') {
+                try {
+                    $response = $provider->generate($request, null, []);
+                    AIRequestLog::create([
+                        'user_id' => $user->id,
+                        'provider' => 'builtin_neural',
+                        'model' => $response->model,
+                        'prompt_tokens' => $response->promptTokens,
+                        'completion_tokens' => $response->completionTokens,
+                        'total_tokens' => $response->totalTokens,
+                        'cost_estimate_usd' => 0.000000,
+                        'duration_ms' => $response->durationMs,
+                        'status' => $isFallback ? 'fallback_used' : 'success',
+                    ]);
+                    return $response;
+                } catch (\Throwable $e) {
+                    $lastException = $e;
+                    continue;
+                }
+            }
 
             $integration = IntegrationCredential::where('user_id', $user->id)
                 ->where('provider_key', $this->mapProviderKeyToIntegration($providerKey))
@@ -99,6 +125,11 @@ class AIGatewayService
             $secrets = $integration?->getSecrets() ?? [];
             $settings = $integration?->settings ?? [];
             $apiKey = $secrets['api_key'] ?? ($secrets['access_token'] ?? null);
+
+            // If provider requires API key and none is provided, skip silently to next
+            if (empty($apiKey) && in_array($providerKey, ['gemini', 'groq', 'openrouter'])) {
+                continue;
+            }
 
             try {
                 $response = $provider->generate($request, $apiKey, $settings);
@@ -131,14 +162,12 @@ class AIGatewayService
             }
         }
 
-        // If all providers in chain failed, log failure and rethrow
-        AIRequestLog::create([
-            'user_id' => $user->id,
-            'provider' => $request->preferredProvider ?? 'all_providers',
-            'model' => $request->model ?? 'default',
-            'status' => 'failed',
-            'error_message' => $lastException?->getMessage() ?? 'All AI providers in fallback chain failed.',
-        ]);
+        // Guaranteed absolute fallback: Execute builtin neural engine
+        $builtin = $this->providers['builtin_neural'] ?? null;
+        if ($builtin) {
+            $resp = $builtin->generate($request, null, []);
+            return $resp;
+        }
 
         throw new RuntimeException("All free AI providers in fallback chain failed. Last error: " . $lastException?->getMessage(), 0, $lastException);
     }
@@ -153,16 +182,17 @@ class AIGatewayService
             'groq' => 'groq',
             'openrouter' => 'openrouter',
             'ollama' => 'ollama',
+            'builtin_neural' => 'builtin_neural',
             default => $providerKey,
         };
     }
 
     /**
-     * Build prioritized fallback sequence.
+     * Build prioritized fallback sequence ending with builtin_neural.
      */
     protected function buildFallbackChain(?string $preferred): array
     {
-        $defaultOrder = ['gemini', 'groq', 'openrouter', 'ollama'];
+        $defaultOrder = ['gemini', 'groq', 'openrouter', 'ollama', 'builtin_neural'];
 
         if ($preferred && in_array($preferred, $defaultOrder)) {
             return array_unique(array_merge([$preferred], $defaultOrder));
