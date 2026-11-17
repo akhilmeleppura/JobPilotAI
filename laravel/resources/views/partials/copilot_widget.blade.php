@@ -2,50 +2,57 @@
 <!-- ================= GLOBAL PILO AI COPILOT & VOICE ASSISTANT ================= -->
 <div id="jobpilotCopilotContainer">
     <!-- Floating Trigger Launcher Button with Smart Notification Badge -->
-    <button id="copilotLauncherBtn" class="btn btn-primary rounded-pill shadow-lg d-flex align-items-center gap-2 px-3 py-2 position-relative" 
-            title="Open Pilo AI (Voice, Mail Dispatch, Notifications, Match Scoring & Reports)"
+    <button id="copilotLauncherBtn" class="pilo-launcher-pill shadow-lg d-flex align-items-center gap-2 px-3 py-2 position-relative" 
+            title="Open Pilo AI (Voice, Mail, Notifications & Reports)"
             onclick="toggleCopilotWidget()">
-        <span class="copilot-pulse"></span>
-        <i class="bi bi-mic-fill text-warning fs-5"></i>
-        <span class="fw-bold d-none d-sm-inline" style="font-size: 0.9rem;">Pilo AI</span>
+        <span class="pilo-neural-dot"></span>
+        <i class="bi bi-robot text-warning fs-5"></i>
+        <span class="fw-semibold text-white d-none d-sm-inline" style="font-size: 0.88rem; letter-spacing: 0.02em;">Pilo AI</span>
         <span id="piloFloatingNotifBadge" class="badge rounded-pill bg-danger d-none" style="font-size: 0.65rem;">
             0
         </span>
     </button>
 
     <!-- Floating Chat Window Card -->
-    <div id="copilotChatCard" class="card shadow-lg border-0 rounded-4 d-none">
-        <!-- Header -->
-        <div class="card-header bg-gradient text-white py-3 px-3 d-flex justify-content-between align-items-center"
-             style="background: linear-gradient(135deg, #091e3a, #102a43); border-top-left-radius: 16px; border-top-right-radius: 16px;">
-            <div class="d-flex align-items-center gap-2">
-                <div class="stat-icon bg-warning text-dark rounded-circle" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
-                    <i class="bi bi-robot fs-6"></i>
+    <div id="copilotChatCard" class="card shadow-2xl border-0 rounded-4 overflow-hidden d-none">
+        <!-- Sleek Modern Header -->
+        <div class="card-header py-3 px-3 d-flex justify-content-between align-items-center border-0"
+             style="background: #0f172a; color: #f8fafc; border-top-left-radius: 16px; border-top-right-radius: 16px;">
+            <div class="d-flex align-items-center gap-2.5">
+                <div class="pilo-avatar-ring">
+                    <i class="bi bi-cpu-fill text-warning fs-6"></i>
                 </div>
                 <div>
-                    <div class="d-flex align-items-center gap-1">
-                        <h6 class="mb-0 fw-bold" style="font-size: 0.95rem;">Pilo AI Copilot</h6>
-                        <span class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" style="font-size: 0.65rem;">Live Neural</span>
+                    <div class="d-flex align-items-center gap-1.5">
+                        <span class="fw-bold" style="font-size: 0.95rem; color: #f8fafc;">Pilo AI</span>
+                        <span class="pilo-status-tag">Live Neural</span>
                     </div>
-                    <small class="text-white-50" style="font-size: 0.72rem;">Voice &bull; Notifications &bull; Dispatch &bull; Match Scoring</small>
+                    <div class="text-white-50" style="font-size: 0.72rem;">Voice &bull; Notifications &bull; Dispatch</div>
                 </div>
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <!-- Notifications Tab Toggle inside Header -->
-                <button type="button" id="btnCopilotNotifToggle" class="btn btn-sm btn-icon text-white p-0 position-relative" onclick="showPiloNotificationTab()" title="Smart Notifications & Alerts">
-                    <i class="bi bi-bell-fill"></i>
-                    <span id="piloHeaderNotifBadge" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none">
-                        <span class="visually-hidden">New alerts</span>
-                    </span>
-                </button>
-                <!-- Voice Mute / Unmute Toggle -->
-                <button type="button" id="btnVoiceToggle" class="btn btn-sm btn-icon text-white p-0" onclick="toggleVoiceOutput()" title="Toggle Voice Output (TTS)">
+
+            <!-- Header Action Controls: Mute/Sound, Notifications, Reset, and Close -->
+            <div class="d-flex align-items-center gap-1">
+                <!-- Sound Mute/Unmute Button -->
+                <button type="button" id="btnVoiceToggle" class="pilo-header-action-btn" onclick="toggleVoiceOutput()" title="Mute / Unmute Voice Audio (TTS)">
                     <i class="bi bi-volume-up-fill" id="voiceToggleIcon"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-icon text-white p-0" onclick="restartCopilotGuide()" title="Executive Briefing">
+
+                <!-- Smart Alerts / Notification shortcut -->
+                <button type="button" id="btnCopilotNotifToggle" class="pilo-header-action-btn position-relative" onclick="showPiloNotificationTab()" title="Check Smart Alerts & Notifications">
+                    <i class="bi bi-bell-fill"></i>
+                    <span id="piloHeaderNotifBadge" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none"></span>
+                </button>
+
+                <!-- Reset / New Briefing -->
+                <button type="button" class="pilo-header-action-btn" onclick="restartCopilotGuide()" title="Executive Briefing / Reset View">
                     <i class="bi bi-arrow-clockwise"></i>
                 </button>
-                <button type="button" class="btn-close btn-close-white btn-sm" onclick="toggleCopilotWidget()"></button>
+
+                <!-- Dedicated Visible Close Button -->
+                <button type="button" class="pilo-header-close-btn" onclick="toggleCopilotWidget()" title="Close Pilo Assistant">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
         </div>
 
@@ -55,42 +62,44 @@
         </div>
 
         <!-- Quick Suggestions Chips Bar -->
-        <div id="copilotQuickChips" class="px-3 py-2 bg-light border-top d-flex gap-1 overflow-x-auto" style="white-space: nowrap;">
-            <button class="btn btn-xs btn-outline-danger rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check smart notifications and urgent alerts')">
-                🔔 Alerts & Notifs
+        <div id="copilotQuickChips" class="px-3 py-2 bg-white border-top border-bottom d-flex gap-1.5 overflow-x-auto" style="white-space: nowrap;">
+            <button class="pilo-chip-btn pilo-chip-danger" onclick="sendQuickPrompt('Check smart notifications and urgent alerts')">
+                <i class="bi bi-bell-fill"></i> Alerts
             </button>
-            <button class="btn btn-xs btn-outline-primary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Analyze match and ATS score for Full Stack Developer')">
-                🎯 ATS Match Score
+            <button class="pilo-chip-btn pilo-chip-primary" onclick="sendQuickPrompt('Analyze match and ATS score for Full Stack Developer')">
+                <i class="bi bi-bullseye"></i> ATS Score
             </button>
-            <button class="btn btn-xs btn-outline-primary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Generate comprehensive executive report')">
-                📊 Report
+            <button class="pilo-chip-btn" onclick="sendQuickPrompt('Generate comprehensive executive report')">
+                <i class="bi bi-bar-chart-fill"></i> Report
             </button>
-            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check mailbox and collect unread emails')">
-                📬 Collect Mail
+            <button class="pilo-chip-btn" onclick="sendQuickPrompt('Check mailbox and collect unread emails')">
+                <i class="bi bi-inbox-fill"></i> Inbox
             </button>
-            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Draft cover letter for Stripe')">
-                ✍️ Draft Letter
+            <button class="pilo-chip-btn" onclick="sendQuickPrompt('Draft cover letter for Stripe')">
+                <i class="bi bi-pen-fill"></i> Draft Letter
             </button>
-            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Send email to 2020with22@gmail.com subject Interview Availability body Ready for interview Friday')">
-                ⚡ Send Mail
+            <button class="pilo-chip-btn" onclick="sendQuickPrompt('Send email to 2020with22@gmail.com subject Interview Availability body Ready for interview Friday')">
+                <i class="bi bi-send-fill"></i> Send Mail
             </button>
         </div>
 
-        <!-- Input Bar with Mic Recording Trigger -->
-        <div class="card-footer bg-white border-top p-2" style="border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;">
+        <!-- Input Bar with Mic Dictation Trigger -->
+        <div class="card-footer bg-white p-2.5 border-0">
             <form id="copilotForm" onsubmit="handleCopilotSubmit(event)" class="d-flex align-items-center gap-2 m-0">
                 <!-- Voice Dictation Button (Web Speech API) -->
-                <button type="button" id="btnVoiceRecord" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 34px; height: 34px; flex-shrink: 0;" 
+                <button type="button" id="btnVoiceRecord" class="btn btn-sm btn-light rounded-circle border shadow-xs" style="width: 36px; height: 36px; flex-shrink: 0;" 
                         title="Voice Input (Speak to Pilo)" onclick="toggleVoiceDictation()">
-                    <i class="bi bi-mic-fill" id="micIcon"></i>
+                    <i class="bi bi-mic-fill text-secondary" id="micIcon"></i>
                 </button>
-                <input type="text" id="copilotInput" class="form-control form-control-sm border-0 bg-light rounded-pill px-3 py-2" 
-                       placeholder="Ask Pilo (e.g. 'check alerts', 'match score', 'send mail')..." autocomplete="off">
-                <button type="submit" id="copilotSendBtn" class="btn btn-sm btn-primary rounded-circle" style="width: 34px; height: 34px; flex-shrink: 0;" title="Send">
+                <div class="position-relative flex-grow-1">
+                    <input type="text" id="copilotInput" class="form-control form-control-sm border-0 bg-light rounded-pill px-3 py-2 pe-4" 
+                           placeholder="Ask Pilo or click mic to speak..." autocomplete="off">
+                </div>
+                <button type="submit" id="copilotSendBtn" class="btn btn-sm btn-primary rounded-circle shadow-xs" style="width: 36px; height: 36px; flex-shrink: 0;" title="Send">
                     <i class="bi bi-arrow-up-short fs-5"></i>
                 </button>
             </form>
-            <div id="voiceStatusIndicator" class="small text-danger mt-1 text-center d-none" style="font-size: 0.72rem;">
+            <div id="voiceStatusIndicator" class="small text-danger mt-1.5 text-center d-none" style="font-size: 0.72rem;">
                 <i class="bi bi-record-circle-fill me-1"></i> Listening to your voice... Speak now!
             </div>
         </div>
@@ -98,7 +107,7 @@
 </div>
 
 <style>
-/* Floating Assistant Styling */
+/* Modern Pilo UI Styles */
 #jobpilotCopilotContainer {
     position: fixed;
     bottom: 24px;
@@ -107,41 +116,142 @@
     font-family: inherit;
 }
 
-#copilotLauncherBtn {
-    border: none;
-    background: linear-gradient(135deg, #091e3a, #1d4ed8);
-    box-shadow: 0 10px 25px -5px rgba(16, 42, 67, 0.4), 0 8px 10px -6px rgba(37, 99, 235, 0.3);
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+.pilo-launcher-pill {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4), 0 8px 10px -6px rgba(15, 23, 42, 0.2);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    cursor: pointer;
 }
-#copilotLauncherBtn:hover {
-    transform: translateY(-3px) scale(1.02);
+.pilo-launcher-pill:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 14px 28px -5px rgba(15, 23, 42, 0.5);
 }
 
-.copilot-pulse {
-    width: 9px;
-    height: 9px;
+.pilo-neural-dot {
+    width: 8px;
+    height: 8px;
     background: #10b981;
     border-radius: 50%;
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-    animation: copilotPulse 1.8s infinite;
+    animation: piloPulse 1.8s infinite;
 }
 
-@keyframes copilotPulse {
+@keyframes piloPulse {
     0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    70% { transform: scale(1); box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
 #copilotChatCard {
     width: 420px;
     max-width: 92vw;
-    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
-    animation: copilotFadeIn 0.25s ease-out;
+    background: #ffffff;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35) !important;
+    animation: piloCardFadeIn 0.2s ease-out;
 }
 
-@keyframes copilotFadeIn {
-    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+@keyframes piloCardFadeIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
     to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pilo-avatar-ring {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pilo-status-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 9999px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.pilo-header-action-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e2e8f0;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: background 0.15s, color 0.15s;
+}
+.pilo-header-action-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+}
+
+.pilo-header-close-btn {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.82rem;
+    margin-left: 2px;
+    transition: background 0.15s, color 0.15s;
+}
+.pilo-header-close-btn:hover {
+    background: rgba(239, 68, 68, 0.8);
+    color: #ffffff;
+}
+
+.pilo-chip-btn {
+    font-size: 0.74rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.pilo-chip-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+.pilo-chip-primary {
+    background: #eff6ff;
+    color: #2563eb;
+    border-color: #bfdbfe;
+}
+.pilo-chip-primary:hover {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+.pilo-chip-danger {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+.pilo-chip-danger:hover {
+    background: #fee2e2;
+    color: #b91c1c;
 }
 
 .copilot-msg-bubble {
@@ -153,7 +263,7 @@
     word-break: break-word;
 }
 .copilot-msg-user {
-    background: #1d4ed8;
+    background: #0f172a;
     color: #ffffff;
     border-bottom-right-radius: 2px;
     margin-left: auto;
@@ -163,11 +273,12 @@
     color: #1e293b;
     border-bottom-left-radius: 2px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .mic-recording-pulse {
     background-color: #ef4444 !important;
+    border-color: #dc2626 !important;
     color: #ffffff !important;
     animation: micBlink 1s infinite alternate;
 }
@@ -228,6 +339,7 @@ function startVoiceDictation() {
         recognition.start();
         isRecordingVoice = true;
         document.getElementById('btnVoiceRecord')?.classList.add('mic-recording-pulse');
+        document.getElementById('micIcon')?.classList.replace('text-secondary', 'text-white');
         document.getElementById('voiceStatusIndicator')?.classList.remove('d-none');
     } catch(e) {
         console.warn('Voice start exception:', e);
@@ -237,6 +349,7 @@ function startVoiceDictation() {
 function stopVoiceDictation() {
     isRecordingVoice = false;
     document.getElementById('btnVoiceRecord')?.classList.remove('mic-recording-pulse');
+    document.getElementById('micIcon')?.classList.replace('text-white', 'text-secondary');
     document.getElementById('voiceStatusIndicator')?.classList.add('d-none');
     try { recognition.stop(); } catch(e) {}
 }
@@ -244,11 +357,14 @@ function stopVoiceDictation() {
 function toggleVoiceOutput() {
     voiceOutputEnabled = !voiceOutputEnabled;
     const icon = document.getElementById('voiceToggleIcon');
+    const btn = document.getElementById('btnVoiceToggle');
     if (voiceOutputEnabled) {
-        icon.className = 'bi bi-volume-up-fill';
-        speakWithPilo('Voice output activated.');
+        icon.className = 'bi bi-volume-up-fill text-success';
+        btn.setAttribute('title', 'Voice Audio Active (Click to Mute)');
+        speakWithPilo('Voice audio unmuted.');
     } else {
-        icon.className = 'bi bi-volume-mute-fill';
+        icon.className = 'bi bi-volume-mute-fill text-danger';
+        btn.setAttribute('title', 'Voice Audio Muted (Click to Unmute)');
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
         }
@@ -291,29 +407,32 @@ function initCopilotGuide() {
     copilotInitialized = true;
     const area = document.getElementById('copilotMessagesArea');
     area.innerHTML = `
-        <div class="d-flex gap-2 mb-3">
+        <div class="d-flex gap-2.5 mb-3">
             <div class="stat-icon bg-warning text-dark rounded-circle flex-shrink-0" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">
                 <i class="bi bi-robot"></i>
             </div>
             <div class="copilot-msg-bubble copilot-msg-bot">
-                <div class="fw-bold mb-1">🤖 Pilo AI Online: Ready to assist.</div>
-                Advanced voice, notification & hydraulic copilot features:
-                <ul class="mb-2 ps-3 mt-1" style="font-size: 0.8rem;">
+                <div class="fw-bold mb-1 d-flex align-items-center gap-1.5">
+                    <span>Pilo AI Online</span>
+                    <span class="badge bg-success-subtle text-success py-0" style="font-size: 0.65rem;">Zero Key Ready</span>
+                </div>
+                Speak or type naturally without needing any API keys:
+                <ul class="mb-2 ps-3 mt-1.5" style="font-size: 0.8rem;">
                     <li><strong>Smart Alerts:</strong> <code>check notifications</code> or <code>alerts</code></li>
                     <li><strong>ATS Match Score:</strong> <code>analyze match for <role></code></li>
                     <li><strong>Draft Cover Letter:</strong> <code>draft cover letter for <company></code></li>
-                    <li><strong>Send Mails:</strong> <code>send email to <email> subject ... body ...</code></li>
+                    <li><strong>Direct Email:</strong> <code>send email to <email> subject ... body ...</code></li>
                     <li><strong>Executive Briefing:</strong> <code>generate report</code></li>
                 </ul>
-                <div class="d-flex flex-wrap gap-1 mt-2">
-                    <button class="btn btn-xs btn-outline-danger py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check smart notifications')">
-                        🔔 Check Alerts
+                <div class="d-flex flex-wrap gap-1.5 mt-2 pt-1 border-top">
+                    <button class="pilo-chip-btn pilo-chip-danger" onclick="sendQuickPrompt('Check smart notifications')">
+                        <i class="bi bi-bell-fill"></i> Alerts
                     </button>
-                    <button class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Analyze match for Full Stack Developer')">
-                        🎯 Match Score
+                    <button class="pilo-chip-btn pilo-chip-primary" onclick="sendQuickPrompt('Analyze match for Full Stack Developer')">
+                        <i class="bi bi-bullseye"></i> Match Score
                     </button>
-                    <button class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Generate comprehensive executive report')">
-                        📊 Report
+                    <button class="pilo-chip-btn" onclick="sendQuickPrompt('Generate comprehensive executive report')">
+                        <i class="bi bi-bar-chart-fill"></i> Report
                     </button>
                 </div>
             </div>
@@ -357,12 +476,12 @@ async function handleCopilotSubmit(e) {
     // 2. Render Loading Indicator
     const loadingId = 'copilotLoading_' + Date.now();
     area.innerHTML += `
-        <div id="${loadingId}" class="d-flex gap-2 mb-3">
+        <div id="${loadingId}" class="d-flex gap-2.5 mb-3">
             <div class="stat-icon bg-warning text-dark rounded-circle flex-shrink-0" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">
                 <i class="bi bi-robot"></i>
             </div>
             <div class="copilot-msg-bubble copilot-msg-bot text-muted">
-                <span class="spinner-border spinner-border-sm text-primary me-2"></span> Pilo processing telemetry & neural commands...
+                <span class="spinner-border spinner-border-sm text-primary me-2"></span> Pilo processing neural analysis...
             </div>
         </div>
     `;
@@ -403,17 +522,17 @@ function renderCopilotBotReply(data) {
     let actionsHtml = '';
     
     if (data.quick_actions && data.quick_actions.length > 0) {
-        actionsHtml = '<div class="d-flex flex-wrap gap-2 mt-2 pt-2 border-top">';
+        actionsHtml = '<div class="d-flex flex-wrap gap-1.5 mt-2 pt-2 border-top">';
         data.quick_actions.forEach(act => {
             if (act.url && act.url !== '#') {
                 actionsHtml += `
-                    <a href="${act.url}" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 py-1" style="font-size: 0.78rem;">
+                    <a href="${act.url}" class="pilo-chip-btn pilo-chip-primary" style="font-size: 0.76rem; text-decoration: none;">
                         <i class="bi ${act.icon || 'bi-arrow-right'}"></i> ${escapeHtml(act.label)}
                     </a>
                 `;
             } else {
                 actionsHtml += `
-                    <button class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1 py-1" style="font-size: 0.78rem;" onclick="sendQuickPrompt('${escapeHtml(act.label)}')">
+                    <button class="pilo-chip-btn" style="font-size: 0.76rem;" onclick="sendQuickPrompt('${escapeHtml(act.label)}')">
                         <i class="bi ${act.icon || 'bi-arrow-right'}"></i> ${escapeHtml(act.label)}
                     </button>
                 `;
@@ -433,7 +552,7 @@ function renderCopilotBotReply(data) {
         .replace(/\n/g, '<br>');
 
     area.innerHTML += `
-        <div class="d-flex gap-2 mb-3">
+        <div class="d-flex gap-2.5 mb-3">
             <div class="stat-icon bg-warning text-dark rounded-circle flex-shrink-0" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">
                 <i class="bi bi-robot"></i>
             </div>
