@@ -8,6 +8,7 @@ use App\Modules\AI\app\Services\SmartNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CopilotWidgetController extends Controller
 {
@@ -22,6 +23,10 @@ class CopilotWidgetController extends Controller
     public function message(Request $request): JsonResponse
     {
         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false, 'error' => 'Unauthenticated'], 401);
+        }
+
         $validated = $request->validate([
             'message' => ['required', 'string', 'max:2000'],
         ]);
@@ -40,6 +45,10 @@ class CopilotWidgetController extends Controller
     public function initial(Request $request): JsonResponse
     {
         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false, 'error' => 'Unauthenticated'], 401);
+        }
+
         $response = $this->copilotService->handleUserMessage($user, 'where to start');
 
         return response()->json([
@@ -53,13 +62,32 @@ class CopilotWidgetController extends Controller
      */
     public function notifications(Request $request): JsonResponse
     {
-        $user = Auth::user();
-        $data = $this->notificationService->getNotificationsForUser($user, 10);
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Unauthenticated',
+                ], 401);
+            }
 
-        return response()->json([
-            'success' => true,
-            'data' => $data,
-        ]);
+            $data = $this->notificationService->getNotificationsForUser($user, 10);
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Notifications controller exception: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'unread_count' => 0,
+                    'notifications' => [],
+                    'note' => $e->getMessage()
+                ]
+            ]);
+        }
     }
 
     /**
@@ -68,6 +96,10 @@ class CopilotWidgetController extends Controller
     public function markNotificationRead(Request $request, int $id): JsonResponse
     {
         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false], 401);
+        }
+
         $success = $this->notificationService->markAsRead($user, $id);
 
         return response()->json([
@@ -81,6 +113,10 @@ class CopilotWidgetController extends Controller
     public function markAllNotificationsRead(Request $request): JsonResponse
     {
         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false], 401);
+        }
+
         $count = $this->notificationService->markAllAsRead($user);
 
         return response()->json([
