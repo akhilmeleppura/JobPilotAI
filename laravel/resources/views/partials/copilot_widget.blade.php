@@ -1,13 +1,16 @@
 @if(auth()->check())
 <!-- ================= GLOBAL PILO AI COPILOT & VOICE ASSISTANT ================= -->
 <div id="jobpilotCopilotContainer">
-    <!-- Floating Trigger Launcher Button -->
-    <button id="copilotLauncherBtn" class="btn btn-primary rounded-pill shadow-lg d-flex align-items-center gap-2 px-3 py-2" 
-            title="Open Pilo AI (Voice, Mail Dispatch, Status Check & Reports)"
+    <!-- Floating Trigger Launcher Button with Smart Notification Badge -->
+    <button id="copilotLauncherBtn" class="btn btn-primary rounded-pill shadow-lg d-flex align-items-center gap-2 px-3 py-2 position-relative" 
+            title="Open Pilo AI (Voice, Mail Dispatch, Notifications, Match Scoring & Reports)"
             onclick="toggleCopilotWidget()">
         <span class="copilot-pulse"></span>
         <i class="bi bi-mic-fill text-warning fs-5"></i>
-        <span class="fw-bold d-none d-sm-inline" style="font-size: 0.9rem;">Pilo AI & Voice</span>
+        <span class="fw-bold d-none d-sm-inline" style="font-size: 0.9rem;">Pilo AI</span>
+        <span id="piloFloatingNotifBadge" class="badge rounded-pill bg-danger d-none" style="font-size: 0.65rem;">
+            0
+        </span>
     </button>
 
     <!-- Floating Chat Window Card -->
@@ -22,12 +25,19 @@
                 <div>
                     <div class="d-flex align-items-center gap-1">
                         <h6 class="mb-0 fw-bold" style="font-size: 0.95rem;">Pilo AI Copilot</h6>
-                        <span class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" style="font-size: 0.65rem;">Voice Ready</span>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" style="font-size: 0.65rem;">Live Neural</span>
                     </div>
-                    <small class="text-white-50" style="font-size: 0.72rem;">Mail Dispatch &bull; Status &bull; Reports &bull; Free Inference</small>
+                    <small class="text-white-50" style="font-size: 0.72rem;">Voice &bull; Notifications &bull; Dispatch &bull; Match Scoring</small>
                 </div>
             </div>
             <div class="d-flex align-items-center gap-2">
+                <!-- Notifications Tab Toggle inside Header -->
+                <button type="button" id="btnCopilotNotifToggle" class="btn btn-sm btn-icon text-white p-0 position-relative" onclick="showPiloNotificationTab()" title="Smart Notifications & Alerts">
+                    <i class="bi bi-bell-fill"></i>
+                    <span id="piloHeaderNotifBadge" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none">
+                        <span class="visually-hidden">New alerts</span>
+                    </span>
+                </button>
                 <!-- Voice Mute / Unmute Toggle -->
                 <button type="button" id="btnVoiceToggle" class="btn btn-sm btn-icon text-white p-0" onclick="toggleVoiceOutput()" title="Toggle Voice Output (TTS)">
                     <i class="bi bi-volume-up-fill" id="voiceToggleIcon"></i>
@@ -46,17 +56,23 @@
 
         <!-- Quick Suggestions Chips Bar -->
         <div id="copilotQuickChips" class="px-3 py-2 bg-light border-top d-flex gap-1 overflow-x-auto" style="white-space: nowrap;">
+            <button class="btn btn-xs btn-outline-danger rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check smart notifications and urgent alerts')">
+                🔔 Alerts & Notifs
+            </button>
+            <button class="btn btn-xs btn-outline-primary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Analyze match and ATS score for Full Stack Developer')">
+                🎯 ATS Match Score
+            </button>
             <button class="btn btn-xs btn-outline-primary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Generate comprehensive executive report')">
-                📊 Generate Report
+                📊 Report
             </button>
             <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check mailbox and collect unread emails')">
-                📬 Check Mailbox
+                📬 Collect Mail
             </button>
-            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Send email to 2020with22@gmail.com subject Real Test body Greetings from Pilo AI')">
-                ⚡ Send Mail via Pilo
+            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Draft cover letter for Stripe')">
+                ✍️ Draft Letter
             </button>
-            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Setup API keys order-wise')">
-                🔑 Setup API Keys
+            <button class="btn btn-xs btn-outline-secondary rounded-pill py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Send email to 2020with22@gmail.com subject Interview Availability body Ready for interview Friday')">
+                ⚡ Send Mail
             </button>
         </div>
 
@@ -69,7 +85,7 @@
                     <i class="bi bi-mic-fill" id="micIcon"></i>
                 </button>
                 <input type="text" id="copilotInput" class="form-control form-control-sm border-0 bg-light rounded-pill px-3 py-2" 
-                       placeholder="Speak or ask Pilo (e.g. 'send mail to...', 'report', 'check mail')..." autocomplete="off">
+                       placeholder="Ask Pilo (e.g. 'check alerts', 'match score', 'send mail')..." autocomplete="off">
                 <button type="submit" id="copilotSendBtn" class="btn btn-sm btn-primary rounded-circle" style="width: 34px; height: 34px; flex-shrink: 0;" title="Send">
                     <i class="bi bi-arrow-up-short fs-5"></i>
                 </button>
@@ -117,7 +133,7 @@
 }
 
 #copilotChatCard {
-    width: 410px;
+    width: 420px;
     max-width: 92vw;
     box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
     animation: copilotFadeIn 0.25s ease-out;
@@ -281,32 +297,37 @@ function initCopilotGuide() {
             </div>
             <div class="copilot-msg-bubble copilot-msg-bot">
                 <div class="fw-bold mb-1">🤖 Pilo AI Online: Ready to assist.</div>
-                You can speak or type commands directly:
+                Advanced voice, notification & hydraulic copilot features:
                 <ul class="mb-2 ps-3 mt-1" style="font-size: 0.8rem;">
+                    <li><strong>Smart Alerts:</strong> <code>check notifications</code> or <code>alerts</code></li>
+                    <li><strong>ATS Match Score:</strong> <code>analyze match for <role></code></li>
+                    <li><strong>Draft Cover Letter:</strong> <code>draft cover letter for <company></code></li>
                     <li><strong>Send Mails:</strong> <code>send email to <email> subject ... body ...</code></li>
-                    <li><strong>Inbox Check:</strong> <code>check mail</code> or <code>collect unread emails</code></li>
                     <li><strong>Executive Briefing:</strong> <code>generate report</code></li>
-                    <li><strong>API Auto-Setup:</strong> <code>my gemini key is <KEY></code></li>
                 </ul>
                 <div class="d-flex flex-wrap gap-1 mt-2">
+                    <button class="btn btn-xs btn-outline-danger py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check smart notifications')">
+                        🔔 Check Alerts
+                    </button>
+                    <button class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Analyze match for Full Stack Developer')">
+                        🎯 Match Score
+                    </button>
                     <button class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Generate comprehensive executive report')">
-                        📊 Executive Report
+                        📊 Report
                     </button>
-                    <button class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;" onclick="sendQuickPrompt('Check mailbox and collect unread emails')">
-                        📬 Collect Mail
-                    </button>
-                    <a href="{{ url('/outlook') }}" class="btn btn-xs btn-outline-secondary py-1 px-2" style="font-size: 0.75rem;">
-                        ✉️ Outlook Hub
-                    </a>
                 </div>
             </div>
         </div>
     `;
-    speakWithPilo("Pilo online. All systems nominal. How may I assist you today?");
+    speakWithPilo("Pilo online. Proactive monitoring and smart features active.");
 }
 
 function restartCopilotGuide() {
     initCopilotGuide();
+}
+
+function showPiloNotificationTab() {
+    sendQuickPrompt('check notifications');
 }
 
 function sendQuickPrompt(promptText) {
@@ -341,7 +362,7 @@ async function handleCopilotSubmit(e) {
                 <i class="bi bi-robot"></i>
             </div>
             <div class="copilot-msg-bubble copilot-msg-bot text-muted">
-                <span class="spinner-border spinner-border-sm text-primary me-2"></span> Pilo analyzing telemetry & executing commands...
+                <span class="spinner-border spinner-border-sm text-primary me-2"></span> Pilo processing telemetry & neural commands...
             </div>
         </div>
     `;
@@ -407,6 +428,8 @@ function renderCopilotBotReply(data) {
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/`([^`]+)`/g, '<code class="bg-light px-1 rounded text-primary">$1</code>')
+        .replace(/```text\n([\s\S]*?)```/g, '<pre class="bg-light p-2 rounded small text-dark border">$1</pre>')
+        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-primary fw-semibold">$1</a>')
         .replace(/\n/g, '<br>');
 
     area.innerHTML += `
@@ -435,5 +458,45 @@ function escapeHtml(text) {
     div.innerText = text;
     return div.innerHTML;
 }
+
+// Proactive Polling for Notification Counts
+async function pollPiloNotifications() {
+    try {
+        const res = await fetch("{{ route('ai.widget.notifications') }}");
+        const json = await res.json();
+        if (json.success && json.data) {
+            const count = json.data.unread_count || 0;
+            const floatingBadge = document.getElementById('piloFloatingNotifBadge');
+            const headerBadge = document.getElementById('piloHeaderNotifBadge');
+            const navBadge = document.getElementById('piloNavNotificationBadge');
+
+            if (count > 0) {
+                if (floatingBadge) {
+                    floatingBadge.innerText = count;
+                    floatingBadge.classList.remove('d-none');
+                }
+                if (headerBadge) {
+                    headerBadge.classList.remove('d-none');
+                }
+                if (navBadge) {
+                    navBadge.innerText = count;
+                    navBadge.classList.remove('d-none');
+                }
+            } else {
+                if (floatingBadge) floatingBadge.classList.add('d-none');
+                if (headerBadge) headerBadge.classList.add('d-none');
+                if (navBadge) navBadge.classList.add('d-none');
+            }
+        }
+    } catch(e) {
+        // Silent catch for background poll
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    pollPiloNotifications();
+    // Poll every 60 seconds
+    setInterval(pollPiloNotifications, 60000);
+});
 </script>
 @endif

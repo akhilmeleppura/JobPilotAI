@@ -15,6 +15,11 @@ Route::middleware('auth')->prefix('ai-chat')->name('ai.')->group(function () {
     // Floating Copilot Assistant Widget endpoints (available globally across app)
     Route::post('/widget/message', [CopilotWidgetController::class, 'message'])->name('widget.message');
     Route::get('/widget/initial', [CopilotWidgetController::class, 'initial'])->name('widget.initial');
+    
+    // Proactive Smart Notification Endpoints
+    Route::get('/widget/notifications', [CopilotWidgetController::class, 'notifications'])->name('widget.notifications');
+    Route::post('/widget/notifications/{id}/read', [CopilotWidgetController::class, 'markNotificationRead'])->name('widget.notifications.read');
+    Route::post('/widget/notifications/read-all', [CopilotWidgetController::class, 'markAllNotificationsRead'])->name('widget.notifications.read-all');
 
     // Backward-compatible Playground & completion endpoints
     Route::get('/playground', [AIController::class, 'index'])->name('playground');

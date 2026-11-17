@@ -4,6 +4,7 @@ namespace App\Modules\AI\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\AI\app\Services\CopilotAssistantService;
+use App\Modules\AI\app\Services\SmartNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
 class CopilotWidgetController extends Controller
 {
     public function __construct(
-        protected CopilotAssistantService $copilotService
+        protected CopilotAssistantService $copilotService,
+        protected SmartNotificationService $notificationService
     ) {}
 
     /**
@@ -43,6 +45,47 @@ class CopilotWidgetController extends Controller
         return response()->json([
             'success' => true,
             'data' => $response,
+        ]);
+    }
+
+    /**
+     * Get proactive real-time notifications for the current user.
+     */
+    public function notifications(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+        $data = $this->notificationService->getNotificationsForUser($user, 10);
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
+
+    /**
+     * Mark a specific notification as read.
+     */
+    public function markNotificationRead(Request $request, int $id): JsonResponse
+    {
+        $user = Auth::user();
+        $success = $this->notificationService->markAsRead($user, $id);
+
+        return response()->json([
+            'success' => $success,
+        ]);
+    }
+
+    /**
+     * Mark all notifications as read.
+     */
+    public function markAllNotificationsRead(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+        $count = $this->notificationService->markAllAsRead($user);
+
+        return response()->json([
+            'success' => true,
+            'marked_count' => $count,
         ]);
     }
 }

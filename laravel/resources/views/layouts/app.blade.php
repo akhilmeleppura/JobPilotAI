@@ -918,6 +918,16 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
+                    <!-- Pilo Smart Notification Bell in Navbar -->
+                    <button type="button" class="btn btn-sm btn-outline-secondary position-relative d-inline-flex align-items-center" 
+                            onclick="if(typeof toggleCopilotWidget === 'function'){ toggleCopilotWidget(); setTimeout(() => sendQuickPrompt('check notifications'), 200); }" 
+                            title="Pilo Smart Notifications & Alerts" id="navbarPiloNotifBtn">
+                        <i class="bi bi-bell-fill text-warning"></i>
+                        <span id="piloNavNotificationBadge" class="badge bg-danger rounded-pill ms-1 d-none" style="font-size: 0.65rem;">
+                            0
+                        </span>
+                    </button>
+
                     <!-- Fast Shortcuts in Navbar -->
                     <a href="{{ url('/settings') }}" class="btn btn-sm btn-outline-secondary d-none d-sm-inline-flex align-items-center gap-1" title="Settings">
                         <i class="bi bi-gear-fill"></i>
